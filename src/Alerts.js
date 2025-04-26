@@ -14,8 +14,9 @@ export default function Alerts() {
         location,
         to: phone
       });
-      setStatus(res.data.status);
+      setStatus(res.data?.status || "Alert sent successfully!");
     } catch (err) {
+      console.error(err);
       setStatus('Error sending alert: ' + (err.response?.data?.error || err.message));
     }
   };
@@ -44,11 +45,13 @@ export default function Alerts() {
         onChange={(e) => setPhone(e.target.value)}
         style={{ display: 'block', margin: '10px 0', padding: '8px' }}
       />
-      <button onClick={sendAlert} style={{ padding: '10px 20px', backgroundColor: '#28a745', color: '#fff' }}>
+      <button
+        onClick={sendAlert}
+        style={{ padding: '10px 20px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '5px' }}
+      >
         Send Alert
       </button>
-      {status && <p style={{ marginTop: '1rem', color: '#555' }}>{status}</p>}
+      {status && <p style={{ marginTop: '1rem', color: status.startsWith('Error') ? 'red' : 'green' }}>{status}</p>}
     </div>
   );
 }
-
